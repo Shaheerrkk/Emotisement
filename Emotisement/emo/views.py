@@ -62,19 +62,57 @@ def signup(request):
     
     return render(request, 'signup.html', context)
 
+# views.py
+# views.py
+# views.py
+# views.py
+# views.py
+from django.shortcuts import render, redirect, get_object_or_404
+import os
 
 def view_videos(request):
+    if request.method == 'POST':
+        video_id = request.POST.get('delete_video')
+        if video_id:
+            video = get_object_or_404(Video, id=video_id)
+            
+            try:
+                # Get the file path before deleting the video from the database
+                file_path = video.video_file.path
+
+                # Delete the video from the database
+                video.delete()
+
+                # Now, the file should be closed, and we can safely delete it from the media folder
+                os.remove(file_path)
+                
+                return redirect('view_videos')
+            except Exception as e:
+                print(f"Error: {e}")
+                # Handle any exception that might occur during the deletion process
+
     videos = Video.objects.all()
     return render(request, 'view_videos.html', {'videos': videos})
+
+
+
+
+
+
+# views.py
+# views.py
+from django.shortcuts import render, redirect
+from .forms import VideoForm
 
 def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            # Make sure to use the correct name 'video_list' here
-            return redirect('view_videos')
+            return redirect('view_videos')  # Redirect after successful form submission
     else:
         form = VideoForm()
 
     return render(request, 'uploadVideos.html', {'form': form})
+
+

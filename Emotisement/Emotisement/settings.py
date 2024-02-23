@@ -76,14 +76,18 @@ WSGI_APPLICATION = "Emotisement.wsgi.application"
 # https://docs.djangoproject.com/en/5.0/ref/settings/#databases
 
 DATABASES = {
-    "default": {
-        "ENGINE": "django.db.backends.mysql",
-        "NAME": 'emotisement',
-        'USER':'root',
-        'PASSWORD':'emotisement',
-        'PORT':3306,
-        'HOST':'127.0.0.1'
-    }
+    'default': {
+        'ENGINE': 'django.db.backends.mysql',
+        'NAME': 'emotisement',
+        'USER': 'root',
+        'PASSWORD': 'P@ssw0rd',
+        'HOST': 'localhost',
+        'PORT': '3306',
+        'OPTIONS': {
+            'charset': 'utf8mb4',
+            'init_command': "SET collation_connection = 'utf8mb4_unicode_ci'",
+        },
+    },
 }
 
 
@@ -122,8 +126,11 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/5.0/howto/static-files/
 
 STATIC_URL = "static/"
-MEDIA_URL ="/media/"
-MEDIA_ROOT = os.path.join(BASE_DIR,"media/")
+# settings.py
+
+MEDIA_URL = '/media/'
+MEDIA_ROOT = os.path.join(BASE_DIR, 'media')
+
 
 # Default primary key field type
 # https://docs.djangoproject.com/en/5.0/ref/settings/#default-auto-field

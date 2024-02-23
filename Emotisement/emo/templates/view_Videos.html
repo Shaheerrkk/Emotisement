@@ -1,11 +1,13 @@
 <!-- view_videos.html -->
 
+{% load static %}  <!-- Add this line at the top to load the static tag library -->
+
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="/static/css/home.css">
+    <link rel="stylesheet" href="{% static 'css/home.css' %}"> <!-- Use the static tag here -->
     <title>Emotisement - View Videos</title>
     <style>
         body {
@@ -48,6 +50,15 @@
             height: auto;
             display: block;
         }
+
+        .delete-button {
+            background-color: #ff0000;
+            color: #ffffff;
+            padding: 5px 10px;
+            cursor: pointer;
+            border: none;
+            border-radius: 5px;
+        }
     </style>
 </head>
 <body>
@@ -60,9 +71,14 @@
                 <li>
                     <h3>{{ video.title }}</h3>
                     <video controls>
-                        <source src="/media/Emotisement/24/{{ video.filename }}" type="video/mp4">
+                        <source src="{{ video.video_file.url }}" type="video/mp4">
                         Your browser does not support the video tag.
                     </video>
+                    <form method="post">
+                        {% csrf_token %}
+                        <input type="hidden" name="delete_video" value="{{ video.id }}">
+                        <button type="submit" class="delete-button">Delete</button>
+                    </form>
                 </li>
             {% endfor %}
         </ul>
