@@ -7,11 +7,11 @@ from django.conf.urls.static import static
 from .views import view_videos, upload_video
 
 urlpatterns = [
-    path("aftersign/", views.homePage,name='home'),   #page wherer you upload or view videos
+    path("", views.homePage,name='home'),   #page wherer you upload or view videos
     path("upload/", views.upload_video,name="upload"), 
     path("generate-report/", views.generateReport),
     path('signin/', views.signin, name="signin"),
-    path("", views.signup, name="signup"),
+    path("signup/", views.signup, name="signup"),
     path('signout/', views.signout, name="signout"),
     path('upload/', upload_video, name='upload_video'),
     path('view/', view_videos, name='view_videos'),
