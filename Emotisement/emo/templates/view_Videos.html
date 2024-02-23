@@ -1,0 +1,26 @@
+<!-- view_videos.html -->
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/home.css">
+    <title>Emotisement - View Videos</title>
+</head>
+<body>
+
+    <h2>Uploaded Videos</h2>
+
+    {% if videos %}
+        <ul>
+            {% for video in videos %}
+                <li>{{ video.title }} - <a href="{{ video.video.url }}" target="_blank">View Video</a></li>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No videos uploaded yet.</p>
+    {% endif %}
+
+</body>
+</html>
