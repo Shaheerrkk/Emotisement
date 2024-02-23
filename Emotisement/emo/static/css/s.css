@@ -1,0 +1,29 @@
+body {
+    background-color: black;
+    color: white; /* Text color for better visibility on black background */
+    font-family: Arial, sans-serif;
+    margin: 0;
+    padding: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    height: 100vh;
+}
+
+button {
+    background: linear-gradient(to right, #4CAF50, #2196F3); /* Gradient colors for the button */
+    color: white;
+    border: none;
+    padding: 10px 20px;
+    text-align: center;
+    text-decoration: none;
+    display: inline-block;
+    font-size: 16px;
+    margin: 10px;
+    cursor: pointer;
+    border-radius: 5px;
+}
+
+button:hover {
+    background: linear-gradient(to right, #45a049, #1976D2); /* Gradient colors on hover */
+}
