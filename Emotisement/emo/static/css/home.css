@@ -1,7 +1,7 @@
 body {
-    background-color: black;
-    color: white; /* Text color for better visibility on black background */
-    font-family: Arial, sans-serif;
+    background-color: #1a1a1a;
+    color: #ffffff;
+    font-family: 'Arial', sans-serif;
     margin: 0;
     padding: 0;
     display: flex;
@@ -10,20 +10,43 @@ body {
     height: 100vh;
 }
 
+.container {
+    background-color: #2c2a2a; /* Gray color for the box */
+    padding: 20px;
+    border-radius: 10px;
+    text-align: center;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
 button {
-    background: linear-gradient(to right, #4CAF50, #2196F3); /* Gradient colors for the button */
-    color: white;
+    background: #ffffff; /* White color for the buttons */
+    color: #1a1a1a;
     border: none;
-    padding: 10px 20px;
+    padding: 15px 25px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
-    font-size: 16px;
+    font-size: 18px;
     margin: 10px;
     cursor: pointer;
     border-radius: 5px;
+    transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
 button:hover {
-    background: linear-gradient(to right, #45a049, #1976D2); /* Gradient colors on hover */
+    background: linear-gradient(to right, #45a049, #1976D2);
+    transform: scale(1.05);
+}
+
+/* Optional: Add a subtle box shadow to the body for depth */
+body::before {
+    content: '';
+    position: fixed;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 100%;
+    background: linear-gradient(45deg, #00ffcc, #003366);
+    z-index: -1;
+    opacity: 0.3;
 }

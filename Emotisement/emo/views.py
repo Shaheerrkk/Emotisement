@@ -5,6 +5,7 @@ from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Video
 from .forms import VideoForm
+from .models import Video
 
 def homePage(request):
     return render(request,"home.html")
@@ -61,17 +62,18 @@ def signup(request):
     
     return render(request, 'signup.html', context)
 
-def viewVideos(request):
-    video= Video.objects.all()
-    return render (request,"viewVideos.html",{"video":video})
 
+def view_videos(request):
+    videos = Video.objects.all()
+    return render(request, 'view_videos.html', {'videos': videos})
 
 def upload_video(request):
     if request.method == 'POST':
         form = VideoForm(request.POST, request.FILES)
         if form.is_valid():
             form.save()
-            return redirect('video_list')  # Assuming you have a view for listing videos
+            # Make sure to use the correct name 'video_list' here
+            return redirect('view_videos')
     else:
         form = VideoForm()
 
