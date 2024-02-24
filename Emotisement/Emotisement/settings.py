@@ -80,7 +80,7 @@ DATABASES = {
         'ENGINE': 'django.db.backends.mysql',
         'NAME': 'emotisement',
         'USER': 'root',
-        'PASSWORD': 'P@ssw0rd',
+        'PASSWORD': 'fypmanagementsystem@82023',
         'HOST': 'localhost',
         'PORT': '3306',
         'OPTIONS': {

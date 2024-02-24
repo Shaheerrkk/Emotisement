@@ -3,12 +3,19 @@ from django.shortcuts import render,redirect
 from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
-from .models import Video
+from .models import Video,VideoEmotions
 from .forms import VideoForm
 from .models import Video
+from django.conf import settings
+from .inference import predict
+from django.http import JsonResponse
+from django.contrib.auth.decorators import login_required
 
 def homePage(request):
-    return render(request,"home.html")
+    if request.user.is_authenticated:
+        return render(request,"home.html")
+    else:
+        return redirect('signin')
 def aboutUs(request):
     return HttpResponse("About Us")
 def upload(request):
@@ -33,6 +40,7 @@ def signin(request):
 def signout(request):
     logout(request)
     return redirect('signin')
+
 
 from django.contrib.auth.models import User
 
@@ -116,3 +124,64 @@ def upload_video(request):
     return render(request, 'uploadVideos.html', {'form': form})
 
 
+
+
+def emotionCapture(request):
+    
+    if request.user.is_authenticated and request.user.is_superuser:
+    
+        videos = Video.objects.all()
+        context = {
+            'MEDIA_URL': settings.MEDIA_URL,
+            'videos': videos
+        }
+        return render(request,'emotionCapture.html', context)
+    elif not request.user.is_superuser:
+        return redirect('access_denied')
+    else:
+        # Redirect or display a forbidden message
+        return redirect('adminsignin')
+
+
+def prediction(request):
+    if request.method == 'POST':
+        video_chunks = [request.FILES[key] for key in request.FILES if key.startswith('video_chunk_')]
+        
+        uploaded_file = request.FILES.get('video')
+        width = request.POST.get('width')
+        height = request.POST.get('height')
+        video_id=request.POST.get('id')
+        # Perform inference
+        results ={"c":"jg"}
+        results = predict(video_chunks, width, height)
+        results = {"emotions_and_timestamp": results}
+        video_emotions, created = VideoEmotions.objects.get_or_create(video_id=video_id)
+        if(results):
+            video_emotions.emotions_and_timestamp = results
+            video_emotions.save()
+        # Return inference results as JSON response
+        return JsonResponse(results)
+    else:
+        return render(request, 'upload.html')
+
+
+def adminsignin(request):
+    context={"message":""}
+    if request.method=='POST':
+        username=request.POST.get('username')
+        pass1=request.POST.get('pass')
+        user=authenticate(request,username=username,password=pass1)
+        if user is not None and user.is_superuser:
+            login(request,user)
+            return redirect('emotion_capture')
+        elif not user.is_superuser:
+            context["message"]="You are not authorized to view the page!!!"
+        else:
+            context["message"]="Username or Password is not correct!!!"
+
+    return render (request,'adminsignin.html',context)
+
+
+def unauthorized_access_handler(request):
+    # You can render an access denied page or return a response with an error message
+    return render(request, 'accessDenied.html', {'message': 'Access Denied'})

@@ -8,3 +8,11 @@ class Video(models.Model):
 
     def __str__(self):
         return self.title
+
+
+class VideoEmotions(models.Model):
+    video = models.ForeignKey('Video', on_delete=models.CASCADE)
+    emotions_and_timestamp = models.JSONField(null=True)
+
+    def __str__(self):
+        return f"Emotions for {self.video.id}"

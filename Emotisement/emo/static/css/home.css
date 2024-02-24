@@ -1,13 +1,21 @@
 body {
-    background-color: #1a1a1a;
+    background-color: #080710;
     color: #ffffff;
     font-family: 'Arial', sans-serif;
+    text-align: center;
     margin: 0;
     padding: 0;
     display: flex;
     align-items: center;
     justify-content: center;
     height: 100vh;
+}
+
+.button-container {
+    background-color: #808080;
+    padding: 20px;
+    border-radius: 10px;
+    box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
 .container {
@@ -18,11 +26,15 @@ body {
     box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
 }
 
-button {
+button,a {
     background: #ffffff; /* White color for the buttons */
     color: #1a1a1a;
     border: none;
     padding: 15px 25px;
+    font-size: 18px;
+    font-weight: 600;
+    border: none;
+    border-radius: 5px;
     text-align: center;
     text-decoration: none;
     display: inline-block;
@@ -33,11 +45,13 @@ button {
     transition: background 0.3s ease-in-out, transform 0.3s ease-in-out;
 }
 
-button:hover {
+button:hover,a:hover {
     background: linear-gradient(to right, #45a049, #1976D2);
     transform: scale(1.05);
 }
-
+a{
+    text-decoration: none;
+}
 /* Optional: Add a subtle box shadow to the body for depth */
 body::before {
     content: '';

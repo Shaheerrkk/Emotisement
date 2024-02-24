@@ -1,0 +1,187 @@
+
+
+
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="/static/css/emotionCapture.css">
+    
+    <title>Emotisement - View Videos</title>
+</head>
+<body>
+<nav>
+    {% if user.is_authenticated %}
+    <a href="{% url 'signout' %}" >Logout</a>
+    
+    
+    {% endif %}
+</nav>
+    <h2>Videos</h2>
+    {% if videos %}
+        <ul>
+            {% for video in videos %}
+                <video onclick="openInNewTab('{{ MEDIA_URL }}{{ video.video_file }}', '{{ video.id }}')" >
+                    <source src="{{ MEDIA_URL }}{{video.video_file}}" type="video/mp4"/>
+                </video>
+            {% endfor %}
+        </ul>
+    {% else %}
+        <p>No videos uploaded yet.</p>
+    {% endif %}
+
+    <!-- Indicator for recording status -->
+    <div id="recordingIndicator" style="display: none;">
+        <p>Recording...</p>
+    </div>
+
+    <script>
+        let isRecording = false; // Variable to track recording status
+
+        function openInNewTab(videoUrl,id) {
+    // Open the video URL in a new tab
+    window.open(videoUrl, '_blank');
+
+    // Access user's camera and start recording
+    navigator.mediaDevices.getUserMedia({ video: true, audio: true })
+        .then(stream => {
+            const mediaRecorder = new MediaRecorder(stream);
+            const chunks = []; // Array to store recorded video data
+            
+            // Event handler for when data is available
+            mediaRecorder.ondataavailable = event => {
+                chunks.push(event.data);
+            };
+
+
+            function getCookie(name) {
+            let cookieValue = null;
+            if (document.cookie && document.cookie !== '') {
+                const cookies = document.cookie.split(';');
+                for (let i = 0; i < cookies.length; i++) {
+                    const cookie = cookies[i].trim();
+                    if (cookie.substring(0, name.length + 1) === (name + '=')) {
+                        cookieValue = decodeURIComponent(cookie.substring(name.length + 1));
+                        break;
+                    }
+                }
+            }
+            return cookieValue;
+        }
+
+            const csrftoken = getCookie('csrftoken');
+
+            console.log("R")
+            console.log(chunks)
+            console.log("Q")
+            
+            // Event handler for when recording stops
+            mediaRecorder.onstop = () => {
+                // Combine recorded video data into a single Blob
+                const blob = new Blob(chunks, { type: 'video/webm' });
+
+                // Create a URL for the recorded video Blob
+                const videoBlobUrl = URL.createObjectURL(blob);
+
+                const videoElement = document.createElement('video');
+                videoElement.src = videoBlobUrl;
+                let width=0;
+                let height=0;
+                // Event listener for when video metadata is loaded
+                videoElement.addEventListener('loadedmetadata', () => {
+                    width = videoElement.videoWidth;
+                    height = videoElement.videoHeight;
+                    console.log('Width:', width);
+                    console.log('Height:', height);
+                    console.log('a:', videoElement.length);
+
+
+                    
+
+
+                let formData = new FormData();
+                // formData.append('video', blob, 'recorded_video.webm');
+                chunks.forEach((chunk, index) => {
+                    formData.append('video_chunk_' + index, chunk);
+                });
+
+                formData.append('width', width); // Append width to the form data
+                formData.append('height', height);
+                formData.append('id',id);
+                // Make an HTTP POST request to send the video data
+                fetch('/predict/', {
+                    method: 'POST',
+                    body: formData,
+                    headers: {
+                        'X-CSRFToken': getCookie('csrftoken') // Include CSRF token in the header
+                    }
+                })
+                .then(response => {
+                    if (response.ok) {
+                        return response.blob(); // Return the processed video Blob
+                    }
+                    throw new Error('Network response was not ok.');
+                })
+                .then(processedVideoBlob => {
+                    // Handle the processed video Blob as needed
+                    // For example, you can open it in a new tab
+                    const processedVideoUrl = URL.createObjectURL(processedVideoBlob);
+                    window.open(processedVideoUrl, '_blank');
+                })
+                .catch(error => {
+                    console.error('Error:', error);
+                });
+
+
+                    // Now you can use width and height as needed
+
+                    // Clean up
+                    URL.revokeObjectURL(videoBlobUrl);
+                });
+
+                // Append the video element to the document body to trigger loading and metadata extraction
+                document.body.appendChild(videoElement);
+
+
+                console.log(blob)
+
+
+
+
+
+
+                
+                // Open the recorded video in a new tab
+                window.open(videoBlobUrl, '_blank');
+
+                // Optionally, you can upload the recorded video to a server for storage
+                // Example: uploadToServer(blob);
+
+                // Reset recording indicator
+                document.getElementById('recordingIndicator').style.display = 'none';
+            };
+
+            // Start recording
+            mediaRecorder.start();
+            // Show recording indicator
+            document.getElementById('recordingIndicator').style.display = 'block';
+            isRecording = true;
+
+            // Stop recording after 10 seconds (for demonstration)
+            setTimeout(() => {
+                mediaRecorder.stop();
+                isRecording = false;
+                
+            console.log(chunks)
+            }, 5000); // Change 10000 to the desired recording duration in milliseconds
+        })
+        .catch(error => {
+            console.error('Error accessing camera:', error);
+        });
+}
+
+    </script>
+</body>
+</html>
+

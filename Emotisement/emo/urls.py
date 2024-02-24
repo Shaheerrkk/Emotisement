@@ -15,6 +15,11 @@ urlpatterns = [
     path('signout/', views.signout, name="signout"),
     path('upload/', upload_video, name='upload_video'),
     path('view/', view_videos, name='view_videos'),
+    path('adminsignin/', views.adminsignin, name="adminsignin"),
+    path('emotion-capture/', views.emotionCapture, name='emotion_capture'), 
+    path('predict/', views.prediction, name='predict'),
+    path('access-denied/', views.unauthorized_access_handler, name='access_denied'),
+
     #path('videos/', video_list, name='video_list'),
 ]
 if settings.DEBUG:
