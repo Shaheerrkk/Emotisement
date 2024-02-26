@@ -24,24 +24,26 @@ def generateReport(request):
     return HttpResponse("report")
 
 def signin(request):
-    context={"message":""}
-    if request.method=='POST':
-        username=request.POST.get('username')
-        pass1=request.POST.get('pass')
-        user=authenticate(request,username=username,password=pass1)
+    context = {"message": ""}
+    if request.method == 'POST':
+        username = request.POST.get('username')
+        password = request.POST.get('password')  # Corrected to match input name
+        user = authenticate(request, username=username, password=password)
         if user is not None:
-            login(request,user)
+            login(request, user)
             return redirect('home')
         else:
-            context["message"]="Username or Password is not correct!!!"
+            context["message"] = "Username or Password is not correct!!!"
 
-    return render (request,'signin.html',context)
+    return render(request, 'signin.html', context)
+
 
 def signout(request):
     logout(request)
     return redirect('signin')
 
 
+from django.shortcuts import render, redirect
 from django.contrib.auth.models import User
 
 def signup(request):
@@ -56,25 +58,25 @@ def signup(request):
         pass2 = request.POST.get('password2')
         
         if pass1 != pass2:
-            context["message"] = "Passwords are not the same!!"
+            context["message"] = "Passwords do not match!"
         else:
-            # Create user without additional fields
-            my_user = User.objects.create_user(uname, email, pass1)
+            # Check if username or email already exists
+            if User.objects.filter(username=uname).exists() or User.objects.filter(email=email).exists():
+                context["message"] = "Username or email already exists!"
+            else:
+                # Create user without additional fields
+                my_user = User.objects.create_user(uname, email, pass1)
 
-            # Set additional fields
-            my_user.first_name = fname
-            my_user.last_name = lname
-            my_user.save()
+                # Set additional fields
+                my_user.first_name = fname
+                my_user.last_name = lname
+                my_user.save()
 
-            return redirect('signin')
+                return redirect('signin')  # Redirect to the sign-in page
     
     return render(request, 'signup.html', context)
 
-# views.py
-# views.py
-# views.py
-# views.py
-# views.py
+
 from django.shortcuts import render, redirect, get_object_or_404
 import os
 
@@ -104,11 +106,6 @@ def view_videos(request):
 
 
 
-
-
-
-# views.py
-# views.py
 from django.shortcuts import render, redirect
 from .forms import VideoForm
 
