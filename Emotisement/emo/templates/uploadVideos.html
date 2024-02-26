@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<!-- Created By CodingNepal -->
+{% load static %} 
 <html lang="en" dir="ltr">
 
 <head>
@@ -129,3 +129,29 @@
 </body>
 
 </html>
+
+<!-- upload_video.html -->
+{% comment %} {% load static %} 
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="stylesheet" href="{% static 'css/uploadVideos.css' %}">
+    <title>Upload Video</title>
+</head>
+<body>
+    <div class="bg-img">
+    <div class="content">
+    <h2>Upload Video</h2>
+<form method="post" enctype="multipart/form-data">
+    {% csrf_token %}
+    {{ form.as_p }}
+    <button type="submit">Upload</button>
+
+</form>
+    
+</div>
+</div>
+</body>
+</html> {% endcomment %}

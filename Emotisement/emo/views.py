@@ -4,7 +4,6 @@ from django.contrib.auth.models import User
 from django.contrib.auth import authenticate,login,logout
 from django.contrib.auth.decorators import login_required
 from .models import Video,VideoEmotions
-from .forms import VideoForm
 from .models import Video
 from django.conf import settings
 from .inference import predict
@@ -107,18 +106,27 @@ def view_videos(request):
 
 
 from django.shortcuts import render, redirect
-from .forms import VideoForm
-
 def upload_video(request):
     if request.method == 'POST':
-        form = VideoForm(request.POST, request.FILES)
-        if form.is_valid():
-            form.save()
-            return redirect('view_videos')  # Redirect after successful form submission
-    else:
-        form = VideoForm()
+        # Retrieve data from the POST request
+        video_title = request.POST.get('video_title')
+        video_tags = request.POST.get('video_tags')
+        video_description = request.POST.get('video_description')
+        video_file = request.FILES.get('video_file')
 
-    return render(request, 'uploadVideos.html', {'form': form})
+        # Create a new Video object and save it
+        Video.objects.create(
+            title=video_title,
+            tags=video_tags,
+            description=video_description,
+            video_file=video_file
+        )
+
+        # Redirect after successful form submission
+        return redirect('view_videos')  
+
+    # If the request method is not POST, render the uploadVideos.html template
+    return render(request, 'uploadVideos.html')
 
 
 

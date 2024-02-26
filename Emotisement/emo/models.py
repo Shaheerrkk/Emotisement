@@ -1,15 +1,16 @@
-# Emotisement/models.py
-
 from django.db import models
 
 class Video(models.Model):
-    title = models.TextField(default='Enter title')
-    video_tags = models.TextField(default='no tags provided')  # Add video_tags field
-    video_description = models.TextField(default='No description provided')  # Add video_description field
+    title = models.CharField(max_length=100)
+    tags = models.CharField(max_length=100)
+    description = models.TextField()
     video_file = models.FileField(upload_to='Emotisement/%y')
 
     def __str__(self):
         return self.title
+
+
+
 
 
 
