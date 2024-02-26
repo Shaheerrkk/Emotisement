@@ -1,22 +1,131 @@
-<!-- upload_video.html -->
-{% load static %} 
 <!DOCTYPE html>
-<html lang="en">
-<head>
-    <meta charset="UTF-8">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/uploadVideos.css' %}">
-    <title>Upload Video</title>
-</head>
-<body>
-    
-    <h2>Upload Video</h2>
-<form method="post" enctype="multipart/form-data">
-    {% csrf_token %}
-    {{ form.as_p }}
-    <button type="submit">Upload</button>
-</form>
-    
+<!-- Created By CodingNepal -->
+<html lang="en" dir="ltr">
 
+<head>
+    <meta charset="utf-8">
+    <title>Upload Video</title>
+    <style>
+        @import url('https://fonts.googleapis.com/css?family=Montserrat:400,500,600,700|Poppins:400,500&display=swap');
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            user-select: none;
+        }
+
+        .bg-img {
+            background: url('/static/bg2.jpg');
+            height: 100vh;
+            background-size: cover;
+            background-position: center;
+        }
+
+        .bg-img:after {
+            position: absolute;
+            content: '';
+            top: 0;
+            left: 0;
+            height: 100%;
+            width: 100%;
+            background: rgba(0, 0, 0, 0.7);
+        }
+
+        .content {
+            position: absolute;
+            top: 50%;
+            left: 50%;
+            z-index: 999;
+            text-align: center;
+            padding: 60px 32px;
+            width: 370px;
+            transform: translate(-50%, -50%);
+            background: rgba(255, 255, 255, 0.04);
+            box-shadow: -1px 4px 28px 0px rgba(0, 0, 0, 0.75);
+        }
+
+        .content h2 {
+            color: white;
+            font-size: 33px;
+            font-weight: 600;
+            margin: 0 0 35px 0;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        form {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            gap: 20px;
+        }
+
+        form label {
+            color: white;
+            font-weight: bold;
+            font-size: 18px;
+            font-family: 'Montserrat', sans-serif;
+        }
+
+        form input[type="file"] {
+            width: 100%;
+            color: white; /* Change color of "No file chosen" */
+        }
+
+        form input[type="text"],
+        form textarea {
+            width: 100%;
+            padding: 10px;
+            border-radius: 5px;
+            border: 2px solid #3498db; /* Changed border thickness and color */
+        }
+
+        form textarea {
+            height: 150px; /* Increased height for better visibility */
+            resize: vertical;
+        }
+
+        form button {
+            background: #3498db;
+            border: 1px solid #2691d9;
+            color: white;
+            font-size: 18px;
+            letter-spacing: 1px;
+            font-weight: 600;
+            cursor: pointer;
+            font-family: 'Montserrat', sans-serif;
+            padding: 10px 20px;
+            transition: background 0.3s ease;
+        }
+
+        form button:hover {
+            background: #2691d9;
+        }
+    </style>
+</head>
+
+<body>
+    <div class="bg-img">
+        <div class="content">
+            <h2>Upload Video</h2>
+            <form method="post" enctype="multipart/form-data">
+                {% csrf_token %}
+                <label for="video_title">Video Title:</label>
+                <input type="text" name="video_title" id="video_title" required>
+
+                <label for="video_tags">Video Tags:</label>
+                <input type="text" name="video_tags" id="video_tags" required>
+
+                <label for="video_description">Video Description:</label>
+                <textarea name="video_description" id="video_description" required></textarea>
+
+                <label for="video_file">Choose Video File:</label>
+                <input type="file" name="video_file" id="video_file" required>
+
+                <button type="submit">Upload</button>
+            </form>
+        </div>
+    </div>
 </body>
+
 </html>

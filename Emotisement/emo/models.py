@@ -3,11 +3,14 @@
 from django.db import models
 
 class Video(models.Model):
-    title = models.CharField(max_length=255)
+    title = models.TextField(default='Enter title')
+    video_tags = models.TextField(default='no tags provided')  # Add video_tags field
+    video_description = models.TextField(default='No description provided')  # Add video_description field
     video_file = models.FileField(upload_to='Emotisement/%y')
 
     def __str__(self):
         return self.title
+
 
 
 class VideoEmotions(models.Model):
