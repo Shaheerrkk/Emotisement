@@ -1,13 +1,10 @@
-<!-- view_videos.html -->
-
-{% load static %}  <!-- Add this line at the top to load the static tag library -->
-
+{% load static %}
 <!DOCTYPE html>
 <html lang="en">
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <link rel="stylesheet" href="{% static 'css/home.css' %}"> <!-- Use the static tag here -->
+    <link rel="stylesheet" href="{% static 'css/home.css' %}">
     <title>Emotisement - View Videos</title>
     <style>
         body {
@@ -18,7 +15,6 @@
             margin: 0;
         }
 
-        
         .bg-img {
             background: url('/static/bg2.jpg');
             height: 100vh;
@@ -69,9 +65,7 @@
     </style>
 </head>
 <body class="bg-img">
-
     <h2>Uploaded Videos</h2>
-
     {% if videos %}
         <ul>
             {% for video in videos %}
@@ -92,6 +86,5 @@
     {% else %}
         <p>No videos uploaded yet.</p>
     {% endif %}
-
 </body>
 </html>
