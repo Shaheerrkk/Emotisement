@@ -100,7 +100,12 @@
             <div class="button-container">
                 <button onclick="window.location.href='/upload/'">Upload Videos</button>
                 <button onclick="window.location.href='/view/'">View Videos</button>
-                {% if user.is_authenticated %}
+                
+                {% if user.is_authenticated and user.is_superuser %}
+                <button onclick="window.location.href='/emotion-capture/'">Capture Emotions</button>
+                
+                {% endif %}
+                {% if user.is_authenticated%}
                 <a href="{% url 'signout' %}">Logout</a>
                 {% endif %}
             </div>
